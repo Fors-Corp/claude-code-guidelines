@@ -8,7 +8,7 @@ It was not written from first principles. It was **mined from practice**: ~25 re
 
 | File | Purpose |
 |---|---|
-| [`CLAUDE.md`](CLAUDE.md) | The global rule set. Copy to `~/.claude/CLAUDE.md`. |
+| [`CLAUDE.md`](CLAUDE.md) | The global rule set. Goes to `~/.claude/CLAUDE.md` — see [Install with one prompt](#install-with-one-prompt). |
 | [`templates/repo-CLAUDE.md`](templates/repo-CLAUDE.md) | Per-repository template: ≤ 100 lines, non-negotiables, the gate command, a where-to-edit table, a before-you-finish checklist. |
 | [`CHANGELOG.md`](CHANGELOG.md) | Versioned history of the rules (SemVer — a rule change that breaks an existing habit is a major). |
 
@@ -29,11 +29,33 @@ Two structural principles do most of the work:
 - **The global file is a floor.** A repo's own `CLAUDE.md`/`AGENTS.md` may *add* rules; it may not subtract from the core sections. That is what stops two repos from drifting into contradictory copies of the same rule.
 - **Every rule is dated or incident-backed.** "Never pipe the index tool through `head`" is a preference; "never pipe it through `head` — it truncated the one caller that mattered on 2026-09-16" is a rule a session will keep.
 
-## Adopt it
+## Install with one prompt
+
+Paste this into Claude Code, from any directory:
+
+```text
+Install the Claude Code guidelines from https://github.com/Fors-Corp/claude-code-guidelines :
+1. Fetch https://raw.githubusercontent.com/Fors-Corp/claude-code-guidelines/main/CLAUDE.md
+   and https://raw.githubusercontent.com/Fors-Corp/claude-code-guidelines/main/templates/repo-CLAUDE.md
+2. If ~/.claude/CLAUDE.md does not exist, write the first file there. If it does, back it up
+   beside itself as CLAUDE.md.bak-<YYYYMMDD-HHMMSS>, then merge: keep every rule I already
+   have, add the sections and rules I am missing, and list every place where my existing
+   rules and the new ones contradict each other so I can decide.
+3. Save the template to ~/.claude/repo-CLAUDE-template.md.
+4. For each <placeholder> left in ~/.claude/CLAUDE.md, ask me for the value — one question
+   each, with a recommended default.
+5. Show me the final diff against the backup before you finish. Do not touch any other file.
+```
+
+The rules take effect in the next session (`CLAUDE.md` is read at startup). Expect roughly
+3.5k tokens of context per session for the full file; trim sections you don't need.
+
+### Or by hand
 
 ```bash
 git clone https://github.com/Fors-Corp/claude-code-guidelines.git
 cp claude-code-guidelines/CLAUDE.md ~/.claude/CLAUDE.md
+cp claude-code-guidelines/templates/repo-CLAUDE.md ~/.claude/repo-CLAUDE-template.md
 ```
 
 Then search the file for `<` — the handful of placeholders (`<your-publishing-email>`, `<your design system>`, the context-window figure) are the only lines that are specific to one setup. For each repository, start from `templates/repo-CLAUDE.md`; keep it under 100 lines and let it point at `docs/` rather than re-explain the code.
